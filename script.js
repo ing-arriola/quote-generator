@@ -2,7 +2,7 @@ const quoteContainer = document.getElementById("quote-container");
 const quoteText = document.getElementById("quoteText");
 const authorText = document.getElementById("author");
 const twitterBtn = document.getElementById("twitter");
-const newQuoteBtn = document.getElementById("new-quote");
+const newQuoteBtn = document.getElementById("newQuote");
 
 const getQuote = async () => {
   const proxyUrl = "https://secure-gorge-04157.herokuapp.com/";
@@ -11,7 +11,6 @@ const getQuote = async () => {
   try {
     const res = await fetch(proxyUrl + apiUrl);
     const data = await res.json();
-    console.log(data);
     //If a quote is too long then modify its size
     if (data.quoteText.length > 50) {
       quoteText.classList.add("long-quote");
@@ -30,5 +29,15 @@ const getQuote = async () => {
     getQuote();
   }
 };
+
+const tweetQuote = () => {
+  const quote = quoteText.innerText;
+  const author = authorText.innerText;
+  const twitterUrl = `https://twitter.com/intent/tweet?text="${quote}" - ${author}`;
+  window.open(twitterUrl, "_blank");
+};
+
+newQuoteBtn.addEventListener("click", getQuote);
+twitterBtn.addEventListener("click", tweetQuote);
 
 getQuote();
