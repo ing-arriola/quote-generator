@@ -3,7 +3,10 @@ const quoteText = document.getElementById("quoteText");
 const authorText = document.getElementById("author");
 const twitterBtn = document.getElementById("twitter");
 const newQuoteBtn = document.getElementById("newQuote");
+const whatsappBtn = document.getElementById("whatsapp");
 const spinner = document.getElementById("loader");
+
+let errorCounter = 0;
 
 const loading = () => {
   spinner.hidden = false;
@@ -41,8 +44,12 @@ const getQuote = async () => {
     }
     loaded();
   } catch (err) {
-    console.log("whoops there is no quote", err);
-    getQuote();
+    errorCounter++;
+    console.log(errorCounter);
+    if (errorCounter < 10) {
+      getQuote();
+    }
+    console.log("Ooops! There aren't quotes for now :(" + err);
   }
 };
 
@@ -53,7 +60,14 @@ const tweetQuote = () => {
   window.open(twitterUrl, "_blank");
 };
 
+const whatsappQuote = () => {
+  const quote = quoteText.innerText;
+  const author = authorText.innerText;
+  const whats = `whatsapp://send?text="${quote}" - ${author}`;
+  window.open(whats, "_blank");
+};
+
 newQuoteBtn.addEventListener("click", getQuote);
 twitterBtn.addEventListener("click", tweetQuote);
-
+whatsappBtn.addEventListener("click", whatsappQuote);
 getQuote();
